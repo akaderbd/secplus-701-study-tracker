@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security+ SY0-701 Study Command Center</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="side-nav" aria-label="Primary navigation">
+      <div class="brand-block">
+        <span class="brand-mark">S+</span>
+        <div>
+          <strong>SY0-701</strong>
+          <small>Exam Tracker</small>
+        </div>
+      </div>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#weekly">Weeks</a>
+        <a href="#daily">Daily Plan</a>
+        <a href="#domains">Domains</a>
+        <a href="#practice">Practice</a>
+        <a href="#resources">Resources</a>
+        <a href="#final">Final Review</a>
+      </nav>
+      <div class="side-footer">
+        <small>Saved locally in your browser.</small>
+        <button id="resetBtn" class="danger compact-btn">Reset progress</button>
+      </div>
+    </aside>
+
+    <div class="page-wrap">
+      <header class="hero" id="home">
+        <div>
+          <p class="eyebrow">CompTIA Security+ SY0-701</p>
+          <h1>Study Command Center</h1>
+          <p class="subhead">A cleaner dashboard for your 2-month course: continue today, navigate by week or domain, track scores, log weaknesses, and use only resources that move you toward the exam.</p>
+        </div>
+        <div class="hero-card">
+          <div class="score-ring" id="scoreRing"><span id="overallPct">0%</span></div>
+          <p>Overall completion</p>
+        </div>
+      </header>
+
+      <main>
+        <section class="dashboard" aria-label="Progress dashboard">
+          <article class="metric"><span id="daysDone">0</span><small>Days completed</small></article>
+          <article class="metric"><span id="labsDone">0</span><small>Labs completed</small></article>
+          <article class="metric"><span id="questionsDone">0</span><small>Practice questions</small></article>
+          <article class="metric"><span id="avgScore">0%</span><small>Average quiz score</small></article>
+          <article class="metric"><span id="readinessStatus">Not ready</span><small>Exam readiness</small></article>
+        </section>
+
+        <section class="home-grid">
+          <article class="panel continue-panel">
+            <div class="section-title tight">
+              <h2>Continue learning</h2>
+              <p>Your next incomplete day. Do this first.</p>
+            </div>
+            <div id="nextCard" class="next-card"></div>
+          </article>
+
+          <article class="panel">
+            <div class="section-title tight">
+              <h2>Quick actions</h2>
+              <p>Stop hunting around. Use these.</p>
+            </div>
+            <div id="quickJumpGrid" class="quick-grid"></div>
+          </article>
+        </section>
+
+        <section class="panel" id="weekly">
+          <div class="section-title">
+            <h2>Navigate by week</h2>
+            <p>Weekly cards are the cleanest way to move through the course. Click a week to filter the daily plan.</p>
+          </div>
+          <div id="weekGrid" class="week-grid"></div>
+        </section>
+
+        <section class="panel controls" aria-label="Daily plan filters">
+          <div>
+            <label for="weekFilter">Filter week</label>
+            <select id="weekFilter"><option value="all">All weeks</option></select>
+          </div>
+          <div>
+            <label for="statusFilter">Filter status</label>
+            <select id="statusFilter">
+              <option value="all">All</option>
+              <option value="open">Open</option>
+              <option value="done">Completed</option>
+            </select>
+          </div>
+          <div>
+            <label for="searchBox">Search topics</label>
+            <input id="searchBox" type="search" placeholder="crypto, firewall, SIEM..." />
+          </div>
+          <button id="exportBtn">Export progress JSON</button>
+          <label class="import-label">Import JSON<input id="importInput" type="file" accept="application/json" /></label>
+        </section>
+
+        <section class="panel" id="daily">
+          <div class="section-title">
+            <h2>Daily course plan</h2>
+            <p>Each card has reading, video, lab, flashcards, practice target, expected outcome, and confidence checkpoint.</p>
+          </div>
+          <div id="dayList" class="day-list"></div>
+        </section>
+
+        <section class="panel" id="domains">
+          <div class="section-title">
+            <h2>Navigate by Security+ domain</h2>
+            <p>Use this when you are weak in one exam area and need targeted repair.</p>
+          </div>
+          <div id="domainGrid" class="domain-grid"></div>
+        </section>
+
+        <section class="grid-two" id="practice">
+          <section class="panel">
+            <div class="section-title">
+              <h2>Weakness tracker</h2>
+              <p>Log every wrong answer. A wrong-answer log is more valuable than rereading notes.</p>
+            </div>
+            <form id="weaknessForm" class="stacked-form">
+              <input id="wrongAnswer" placeholder="Wrong answer / missed concept" required />
+              <input id="missedTopic" placeholder="Topic missed: IAM, crypto, IR..." required />
+              <textarea id="whyMissed" placeholder="Why did you miss it? Misread? Didn't know term? Confused two controls?" required></textarea>
+              <textarea id="correctExplanation" placeholder="Correct explanation in your own words" required></textarea>
+              <div class="inline-fields">
+                <input id="reviewDate" type="date" required />
+                <select id="confidenceScore" required>
+                  <option value="1">Confidence 1</option><option value="2">Confidence 2</option><option value="3">Confidence 3</option><option value="4">Confidence 4</option><option value="5">Confidence 5</option>
+                </select>
+              </div>
+              <button type="submit">Add weakness</button>
+            </form>
+            <div class="table-wrap"><table><thead><tr><th>Missed</th><th>Topic</th><th>Why</th><th>Fix</th><th>Review</th><th>Confidence</th><th></th></tr></thead><tbody id="weaknessTable"></tbody></table></div>
+          </section>
+
+          <section class="panel">
+            <div class="section-title">
+              <h2>Score tracker</h2>
+              <p>Targets: Week 2 70%+, Week 4 75%+, Week 6 80%+, final 85%+ twice.</p>
+            </div>
+            <form id="scoreForm" class="stacked-form">
+              <input id="scoreLabel" placeholder="Quiz label: Week 3 mixed quiz" required />
+              <div class="inline-fields">
+                <input id="scoreValue" type="number" min="0" max="100" placeholder="Score %" required />
+                <input id="scoreDate" type="date" required />
+              </div>
+              <button type="submit">Add score</button>
+            </form>
+            <div id="scoreBars" class="score-bars"></div>
+          </section>
+        </section>
+
+        <section class="grid-two">
+          <section class="panel">
+            <div class="section-title">
+              <h2>Memory system</h2>
+              <p>Daily recall beats passive watching. No exception.</p>
+            </div>
+            <ul class="checklist" id="memoryChecklist"></ul>
+          </section>
+          <section class="panel">
+            <div class="section-title">
+              <h2>This vs that list</h2>
+              <p>Most Security+ questions are disguised comparison questions.</p>
+            </div>
+            <div id="compareList" class="compare-list"></div>
+          </section>
+        </section>
+
+        <section class="panel" id="resources">
+          <div class="section-title">
+            <h2>Resource library</h2>
+            <p>Grouped by type so you don’t waste time scrolling through a junk drawer.</p>
+          </div>
+          <div class="resource-toolbar">
+            <div id="resourceTypeFilter" class="chip-row"></div>
+            <input id="resourceSearch" type="search" placeholder="Search resource: Messer, GitHub, OWASP, TryHackMe..." />
+          </div>
+          <div id="resourceGrid" class="resource-grid"></div>
+        </section>
+
+        <section class="panel" id="final">
+          <div class="section-title">
+            <h2>Final 10-day readiness checklist</h2>
+            <p>Use this only after finishing most of the course. If your score is weak, repair first.</p>
+          </div>
+          <div id="finalChecklist" class="final-grid"></div>
+        </section>
+      </main>
+
+      <footer>
+        <p>Built for focused SY0-701 prep. Progress is saved locally in your browser using localStorage.</p>
+      </footer>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
